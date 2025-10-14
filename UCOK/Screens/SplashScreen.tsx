@@ -12,7 +12,7 @@ export default function SplashScreen({ navigation }: Props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace("Onboarding");
-    }, 7500);
+    }, 6500);
 
     return () => clearTimeout(timer);
   }, [navigation]);
@@ -35,7 +35,7 @@ export default function SplashScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "white",
   },
   backgroundVideo: {
     width: width,
