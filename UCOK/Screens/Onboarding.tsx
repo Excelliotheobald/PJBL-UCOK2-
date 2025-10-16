@@ -39,26 +39,76 @@ export default function Onboarding({ navigation }: Props) {
     },
   ];
 
-  // animasi floating
-  const floatAnim = useRef(new Animated.Value(0)).current;
+  // 🎨 Animasi lingkaran
+  const circleAnims = [
+    useRef(new Animated.Value(0)).current,
+    useRef(new Animated.Value(0)).current,
+    useRef(new Animated.Value(0)).current,
+    useRef(new Animated.Value(0)).current,
+  ];
+
+  // 🎨 Animasi gambar
+  const imageAnim = useRef(new Animated.Value(0)).current;
+
+  // 🎨 Animasi scroll untuk dot
+  const scrollX = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
+    // loop lingkaran
+    circleAnims.forEach((anim, i) => {
+      const distance = 20 + i * 5;
+      const delay = i * 700;
+      const duration = 3000 + i * 600;
+
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(anim, {
+            toValue: distance,
+            duration,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+            delay,
+          }),
+          Animated.timing(anim, {
+            toValue: -distance,
+            duration,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(anim, {
+            toValue: 0,
+            duration,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    });
+
+    // loop gambar
     Animated.loop(
       Animated.sequence([
-        Animated.timing(floatAnim, {
-          toValue: -30,
-          duration: 3000,
+        Animated.timing(imageAnim, {
+          toValue: -15,
+          duration: 2500,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
-        Animated.timing(floatAnim, {
+        Animated.timing(imageAnim, {
+          toValue: 15,
+          duration: 2500,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(imageAnim, {
           toValue: 0,
-          duration: 3000,
+          duration: 2500,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
       ])
     ).start();
-  }, [floatAnim]);
+  }, []);
 
   const handleNext = () => {
     if (page < slides.length - 1) {
@@ -75,19 +125,34 @@ export default function Onboarding({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      {/* Floating lingkaran */}
+      {/* 🎨 Floating lingkaran */}
       <Animated.View
-        style={[styles.circle2, { top: 100, left: 40, transform: [{ translateY: floatAnim }] }]}
+        style={[
+          styles.circle1,
+          { top: 380, left: 60, transform: [{ translateX: circleAnims[0] }] },
+        ]}
       />
       <Animated.View
-        style={[styles.circle3, { top: 200, right: 30, transform: [{ translateY: floatAnim }] }]}
+        style={[
+          styles.circle2,
+          { top: 100, left: 50, transform: [{ translateY: circleAnims[1] }] },
+        ]}
       />
       <Animated.View
-        style={[styles.circle1, { top: 320, left: 60, transform: [{ translateX: floatAnim }] }]}
+        style={[
+          styles.circle3,
+          { top: 130, right: 40, transform: [{ translateX: circleAnims[2] }] },
+        ]}
+      />
+      <Animated.View
+        style={[
+          styles.circle4,
+          { top: 420, right: 80, transform: [{ translateY: circleAnims[3] }] },
+        ]}
       />
 
-      {/* Floating gambar */}
-      <Animated.View style={[styles.imageWrapper, { transform: [{ translateY: floatAnim }] }]}>
+      {/* 🎨 Floating gambar */}
+      <Animated.View style={{ transform: [{ translateY: imageAnim }] }}>
         <Image
           source={require("./Onboarding.png")}
           style={styles.image}
@@ -95,23 +160,51 @@ export default function Onboarding({ navigation }: Props) {
         />
       </Animated.View>
 
-      {/* indikator */}
       <View style={styles.dotsWrapper}>
-        {slides.map((_, i) => (
-          <View key={i} style={[styles.dot, { opacity: page === i ? 1 : 0.3 }]} />
-        ))}
+        {slides.map((_, i) => {
+          const inputRange = [
+            (i - 1) * width,
+            i * width,
+            (i + 1) * width,
+          ];
+
+          const dotWidth = scrollX.interpolate({
+            inputRange,
+            outputRange: [10, 40, 10], // dot melebar di tengah
+            extrapolate: "clamp",
+          });
+
+          const opacity = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.5, 1, 0.3],
+            extrapolate: "clamp",
+          });
+
+          return (
+            <Animated.View
+              key={i}
+              style={[
+                styles.dot,
+                {
+                  width: dotWidth,
+                  opacity,
+                },
+              ]}
+            />
+          );
+        })}
       </View>
 
       {/* Scroll teks */}
-      <ScrollView
+      <Animated.ScrollView
         ref={scrollRef}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={(e) => {
-          const pageNumber = Math.round(e.nativeEvent.contentOffset.x / width);
-          setPage(pageNumber);
-        }}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
+        )}
         scrollEventThrottle={16}
         style={styles.textSlider}
       >
@@ -121,7 +214,7 @@ export default function Onboarding({ navigation }: Props) {
             <Text style={styles.desc}>{item.desc}</Text>
           </View>
         ))}
-      </ScrollView>
+      </Animated.ScrollView>
 
       {/* Footer */}
       <View style={styles.footer}>
@@ -140,23 +233,21 @@ export default function Onboarding({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#A5DB00",
+    backgroundColor: "#B2DF20",
     alignItems: "center",
     justifyContent: "center",
   },
-  imageWrapper: {
-    position: "absolute",
-    top: height * 0.1,
-    alignSelf: "center",
-  },
   image: {
+    bottom: height * 0.2,
     width: width * 0.8,
     height: height * 0.35,
+    zIndex: 10,
+    alignSelf: "center",
   },
   circle1: {
     position: "absolute",
-    width: 140,
-    height: 140,
+    width: 100,
+    height: 100,
     borderRadius: 100,
     backgroundColor: "#004aad",
   },
@@ -174,6 +265,13 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "#004aad",
   },
+  circle4: {
+    position: "absolute",
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#004aad",
+  },
   dotsWrapper: {
     position: "absolute",
     top: height * 0.55,
@@ -181,7 +279,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dot: {
-    width: 10,
     height: 10,
     borderRadius: 5,
     backgroundColor: "#004aad",
