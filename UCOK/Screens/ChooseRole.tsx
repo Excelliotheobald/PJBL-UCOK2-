@@ -10,6 +10,8 @@ import {
   Animated,
   Easing,
 } from "react-native";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get("window");
 
@@ -33,14 +35,14 @@ export default function ChooseRole() {
       Animated.sequence([
         Animated.parallel([
           Animated.timing(floatAnim, {
-            toValue: -8,
-            duration: 2000,
+            toValue: -20,
+            duration: 2500,
             easing: Easing.inOut(Easing.ease),
             useNativeDriver: true,
           }),
           Animated.timing(rotateAnim, {
             toValue: 1,
-            duration: 2000,
+            duration: 2500,
             easing: Easing.inOut(Easing.ease),
             useNativeDriver: true,
           }),
@@ -341,27 +343,22 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: "#f2f2f2", fontSize: 16, fontWeight: "600" },
 
-  // 🔹 Modal
- // Ganti bagian modalContainer di styles:
-
 modalContainer: {
   position: "absolute",
   bottom: 0,
   width: "100%",
-  height: height * 0.75, // sedikit lebih tinggi, menutupi shape belakang
+  height: height * 0.75, 
   backgroundColor: "#fff",
   borderTopLeftRadius: 40,
   borderTopRightRadius: 40,
   elevation: 20,
   paddingHorizontal: 25,
-  zIndex: 10, // pastikan di atas shape
+  zIndex: 10, 
   shadowColor: "#000",
   shadowOpacity: 0.2,
   shadowOffset: { width: 0, height: -4 },
   shadowRadius: 8,
 },
-
-// Tambahkan juga overlay agar shape belakang tidak terlihat
 
 overlay: {
   position: "absolute",
@@ -369,7 +366,7 @@ overlay: {
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: "rgba(0,0,0,0.3)", // efek semi-gelap di belakang
+  backgroundColor: "rgba(0,0,0,0.3)", 
   zIndex: 5,
 },
 

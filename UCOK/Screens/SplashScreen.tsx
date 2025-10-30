@@ -20,7 +20,7 @@ export default function SplashScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Video
-        source={require("./sp100.mp4")} // pastikan path benar
+        source={require("./SPLASH.mp4")} // pastikan path benar
         style={styles.backgroundVideo}
         resizeMode="cover"
         muted

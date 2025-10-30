@@ -13,6 +13,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
 
+
 const { width, height } = Dimensions.get("window");
 
 type Props = NativeStackScreenProps<RootStackParamList, "Onboarding">;
