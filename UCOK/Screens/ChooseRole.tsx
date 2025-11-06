@@ -10,8 +10,7 @@ import {
   Animated,
   Easing,
 } from "react-native";
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 const { width, height } = Dimensions.get("window");
 
