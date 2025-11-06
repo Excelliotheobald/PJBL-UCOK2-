@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 
+
 const { width, height } = Dimensions.get("window");
 
 export default function ChooseRole() {
@@ -176,6 +177,7 @@ export default function ChooseRole() {
 }
 
 function LoginView({ onClose, onSwitch }: any) {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const isFilled = email && password;
@@ -185,6 +187,13 @@ function LoginView({ onClose, onSwitch }: any) {
       <View style={styles.handle} />
       <Text style={styles.modalTitle}>Selamat Datang</Text>
       <Text style={styles.modalSubtitle}>Silahkan Masuk</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Nama Lengkap"
+        value={username}
+        onChangeText={setUsername}
+      />
 
       <TextInput
         style={styles.input}
@@ -210,12 +219,8 @@ function LoginView({ onClose, onSwitch }: any) {
         <Text style={styles.modalButtonText}>Masuk</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity>
-        <Text style={styles.forgotText}>Lupa kata sandi?</Text>
-      </TouchableOpacity>
-
       <TouchableOpacity onPress={onSwitch}>
-        <Text style={styles.registerText}>Daftar</Text>
+        <Text style={styles.registerText}>Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={onClose}>
@@ -264,7 +269,7 @@ function RegisterView({ onClose, onSwitch }: any) {
           { backgroundColor: isFilled ? "#3A4FE7" : "#AEB9FF" },
         ]}
       >
-        <Text style={styles.modalButtonText}>Daftar</Text>
+        <Text style={styles.modalButtonText}>Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={onSwitch}>
