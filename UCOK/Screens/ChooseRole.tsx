@@ -67,16 +67,6 @@ export default function ChooseRole() {
     ).start();
   }, []);
 
-<<<<<<< HEAD
-  const openModal = (type: 'register' | 'login') => {
-    if (type === 'register') {
-      setShowRegister(true);
-      setShowLogin(false);
-    } else {
-      setShowLogin(true);
-      setShowRegister(false);
-    }
-=======
   /* ============================
         OPEN MODAL BARU
   ============================= */
@@ -88,7 +78,6 @@ export default function ChooseRole() {
     if (type === "register") setShowRegister(true);
     if (type === "login") setShowLogin(true);
     if (type === "forgot") setShowForgot(true);
->>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
 
     Animated.timing(slideAnim, {
       toValue: 0,
@@ -117,16 +106,7 @@ export default function ChooseRole() {
         source={require('./tandatanya.png')}
         style={[
           styles.tandatanya,
-<<<<<<< HEAD
-          {
-            transform: [
-              { translateY: floatAnim },
-              { rotate: rotateInterpolate },
-            ],
-          },
-=======
           { transform: [{ translateY: floatAnim }, { rotate: rotateInterpolate }] },
->>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
         ]}
       />
 
@@ -190,16 +170,8 @@ export default function ChooseRole() {
 
       {(showRegister || showLogin || showForgot) && (
         <>
-<<<<<<< HEAD
-          <TouchableOpacity
-            style={styles.overlay}
-            activeOpacity={1}
-            onPress={closeModal}
-          />
-=======
           <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={closeModal} />
 
->>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
           <Animated.View
             style={[
               styles.modalContainer,
@@ -218,12 +190,8 @@ export default function ChooseRole() {
             {showLogin && (
               <LoginView
                 onClose={closeModal}
-<<<<<<< HEAD
-                onSwitch={() => openModal('register')}
-=======
                 onSwitch={() => openModal("register")}
                 onForgot={() => openModal("forgot")}
->>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
                 navigation={navigation}
               />
             )}
@@ -278,32 +246,9 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
       <View style={styles.handle} />
       <Text style={styles.modalTitle}>Daftar Akun Baru ({role})</Text>
 
-<<<<<<< HEAD
-      <TextInput
-        style={styles.input}
-        placeholder="Nama Lengkap"
-        value={nama}
-        onChangeText={setNama}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Kata Sandi"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-=======
       <TextInput style={styles.input} placeholder="Nama Lengkap" value={nama} onChangeText={setNama} />
       <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" />
       <TextInput style={styles.input} placeholder="Kata Sandi" secureTextEntry value={password} onChangeText={setPassword} />
->>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
 
       <TouchableOpacity
         style={[
@@ -330,16 +275,10 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
 /* ===========================================================
    LOGIN VIEW
 =========================================================== */
-<<<<<<< HEAD
-function LoginView({ onClose, onSwitch, navigation }: any) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-=======
 
 function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
->>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
   const isFilled = email && password;
 
   const handleLogin = async () => {
@@ -372,25 +311,8 @@ function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
       <View style={styles.handle} />
       <Text style={styles.modalTitle}>Masuk Akun</Text>
 
-<<<<<<< HEAD
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Kata Sandi"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-=======
       <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" />
       <TextInput style={styles.input} placeholder="Kata Sandi" secureTextEntry value={password} onChangeText={setPassword} />
->>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
 
       <TouchableOpacity
         style={[
