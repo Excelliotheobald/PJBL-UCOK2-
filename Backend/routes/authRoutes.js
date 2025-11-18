@@ -1,71 +1,82 @@
 import express from "express";
+import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/user.js";
+import crypto from "crypto";
 
 const router = express.Router();
 
+/* ======================
+     REGISTER
+====================== */
 router.post("/register", async (req, res) => {
+  const { nama, email, password, role } = req.body;
+
   try {
-    const { nama, email, password, role } = req.body;
+    const exists = await User.findOne({ email });
+    if (exists) return res.status(400).json({ message: "Email sudah digunakan" });
 
-    if (!nama || !email || !password || !role) {
-      return res.status(400).json({ message: "Semua field wajib diisi!" });
-    }
+    const hashed = await bcrypt.hash(password, 10);
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email sudah terdaftar!" });
-    }
+    const user = await User.create({
+      nama,
+      email,
+      password: hashed,
+      role,
+    });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ nama, email, password: hashedPassword, role });
-    await user.save();
-
-    res.status(201).json({ message: "Registrasi berhasil!" });
-  } catch (error) {
-    console.error("Error di /register:", error);
-    res.status(500).json({ error: "Terjadi kesalahan server." });
+    res.json({ message: "Register sukses", user });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 
+/* ======================
+        LOGIN
+====================== */
 router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email dan password wajib diisi!" });
-    }
-
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User tidak ditemukan!" });
-    }
+    if (!user) return res.status(404).json({ message: "Email tidak ditemukan" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Password salah!" });
-    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ message: "Password salah" });
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET || "defaultsecret",
-      { expiresIn: "1h" }
-    );
+    res.json({ message: "Login sukses", user });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
-    res.status(200).json({
-      message: "Login berhasil!",
-      token,
-      user: {
-        id: user._id,
-        nama: user.nama,
-        email: user.email,
-        role: user.role,
-      },
+/* ======================
+   FORGOT PASSWORD
+====================== */
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email)
+    return res.status(400).json({ message: "Email wajib diisi" });
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "Email tidak terdaftar" });
+
+    // Buat token reset
+    const resetToken = crypto.randomBytes(20).toString("hex");
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 menit
+    await user.save();
+
+    // BELUM KIRIM EMAIL, tapi kita balikan tokennya
+    res.json({
+      message: "Token reset dibuat",
+      resetToken, // sementara ditampilkan agar RN bisa lihat
     });
-  } catch (error) {
-    console.error("Error di /login:", error);
-    res.status(500).json({ error: "Terjadi kesalahan server." });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 

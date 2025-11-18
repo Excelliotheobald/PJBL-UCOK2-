@@ -19,6 +19,8 @@ export default function ChooseRole() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+
   const navigation = useNavigation();
 
   const floatAnim = useRef(new Animated.Value(0)).current;
@@ -65,6 +67,7 @@ export default function ChooseRole() {
     ).start();
   }, []);
 
+<<<<<<< HEAD
   const openModal = (type: 'register' | 'login') => {
     if (type === 'register') {
       setShowRegister(true);
@@ -73,6 +76,19 @@ export default function ChooseRole() {
       setShowLogin(true);
       setShowRegister(false);
     }
+=======
+  /* ============================
+        OPEN MODAL BARU
+  ============================= */
+  const openModal = (type: "register" | "login" | "forgot") => {
+    setShowRegister(false);
+    setShowLogin(false);
+    setShowForgot(false);
+
+    if (type === "register") setShowRegister(true);
+    if (type === "login") setShowLogin(true);
+    if (type === "forgot") setShowForgot(true);
+>>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
 
     Animated.timing(slideAnim, {
       toValue: 0,
@@ -85,12 +101,13 @@ export default function ChooseRole() {
   const closeModal = () => {
     Animated.timing(slideAnim, {
       toValue: height,
-      duration: 300,
+      duration: 400,
       easing: Easing.in(Easing.ease),
       useNativeDriver: true,
     }).start(() => {
       setShowLogin(false);
       setShowRegister(false);
+      setShowForgot(false);
     });
   };
 
@@ -100,12 +117,16 @@ export default function ChooseRole() {
         source={require('./tandatanya.png')}
         style={[
           styles.tandatanya,
+<<<<<<< HEAD
           {
             transform: [
               { translateY: floatAnim },
               { rotate: rotateInterpolate },
             ],
           },
+=======
+          { transform: [{ translateY: floatAnim }, { rotate: rotateInterpolate }] },
+>>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
         ]}
       />
 
@@ -167,32 +188,48 @@ export default function ChooseRole() {
         </TouchableOpacity>
       </View>
 
-      {(showRegister || showLogin) && (
+      {(showRegister || showLogin || showForgot) && (
         <>
+<<<<<<< HEAD
           <TouchableOpacity
             style={styles.overlay}
             activeOpacity={1}
             onPress={closeModal}
           />
+=======
+          <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={closeModal} />
+
+>>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
           <Animated.View
             style={[
               styles.modalContainer,
               { transform: [{ translateY: slideAnim }] },
             ]}
           >
-            {showRegister ? (
+            {showRegister && (
               <RegisterView
                 onClose={closeModal}
                 onSwitch={() => openModal('login')}
                 role={selectedRole}
                 navigation={navigation}
               />
-            ) : (
+            )}
+
+            {showLogin && (
               <LoginView
                 onClose={closeModal}
+<<<<<<< HEAD
                 onSwitch={() => openModal('register')}
+=======
+                onSwitch={() => openModal("register")}
+                onForgot={() => openModal("forgot")}
+>>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
                 navigation={navigation}
               />
+            )}
+
+            {showForgot && (
+              <ForgotPasswordView onClose={closeModal} onSwitch={() => openModal("login")} />
             )}
           </Animated.View>
         </>
@@ -204,6 +241,7 @@ export default function ChooseRole() {
 /* ===========================================================
    REGISTER VIEW
 =========================================================== */
+
 function RegisterView({ onClose, onSwitch, role, navigation }: any) {
   const [nama, setNama] = useState('');
   const [email, setEmail] = useState('');
@@ -240,6 +278,7 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
       <View style={styles.handle} />
       <Text style={styles.modalTitle}>Daftar Akun Baru ({role})</Text>
 
+<<<<<<< HEAD
       <TextInput
         style={styles.input}
         placeholder="Nama Lengkap"
@@ -260,6 +299,11 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
         value={password}
         onChangeText={setPassword}
       />
+=======
+      <TextInput style={styles.input} placeholder="Nama Lengkap" value={nama} onChangeText={setNama} />
+      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="Kata Sandi" secureTextEntry value={password} onChangeText={setPassword} />
+>>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
 
       <TouchableOpacity
         style={[
@@ -286,9 +330,16 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
 /* ===========================================================
    LOGIN VIEW
 =========================================================== */
+<<<<<<< HEAD
 function LoginView({ onClose, onSwitch, navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+=======
+
+function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+>>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
   const isFilled = email && password;
 
   const handleLogin = async () => {
@@ -298,6 +349,7 @@ function LoginView({ onClose, onSwitch, navigation }: any) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await response.json();
 
       if (!response.ok) {
@@ -320,6 +372,7 @@ function LoginView({ onClose, onSwitch, navigation }: any) {
       <View style={styles.handle} />
       <Text style={styles.modalTitle}>Masuk Akun</Text>
 
+<<<<<<< HEAD
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -334,6 +387,10 @@ function LoginView({ onClose, onSwitch, navigation }: any) {
         value={password}
         onChangeText={setPassword}
       />
+=======
+      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="Kata Sandi" secureTextEntry value={password} onChangeText={setPassword} />
+>>>>>>> cfaa5b362bd9d804ddd1882c6f0e498bceb90a92
 
       <TouchableOpacity
         style={[
@@ -344,6 +401,11 @@ function LoginView({ onClose, onSwitch, navigation }: any) {
         onPress={handleLogin}
       >
         <Text style={styles.modalButtonText}>Login</Text>
+      </TouchableOpacity>
+
+      {/* LUPA PASSWORD */}
+      <TouchableOpacity onPress={onForgot}>
+        <Text style={styles.registerText}>Lupa Password?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={onSwitch}>
@@ -358,7 +420,64 @@ function LoginView({ onClose, onSwitch, navigation }: any) {
 }
 
 /* ===========================================================
-   STYLES
+   FORGOT PASSWORD VIEW
+=========================================================== */
+
+function ForgotPasswordView({ onClose, onSwitch }: any) {
+  const [email, setEmail] = useState("");
+
+  const handleSend = async () => {
+    if (!email) return Alert.alert("Oops", "Email harus diisi.");
+
+    try {
+      const response = await fetch("http://10.0.2.2:5000/api/users/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      Alert.alert("Info", data.message || "Link reset telah dikirim.");
+    } catch (err) {
+      Alert.alert("Error", "Tidak dapat terhubung ke server.");
+    }
+  };
+
+  return (
+    <View style={styles.modalContent}>
+      <View style={styles.handle} />
+      <Text style={styles.modalTitle}>Reset Password</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Masukkan email kamu"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+
+      <TouchableOpacity
+        style={[styles.modalButton, { backgroundColor: email ? "#3A4FE7" : "#AEB9FF" }]}
+        disabled={!email}
+        onPress={handleSend}
+      >
+        <Text style={styles.modalButtonText}>Kirim Reset Link</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={onSwitch}>
+        <Text style={styles.registerText}>Kembali ke Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={onClose}>
+        <Text style={styles.closeText}>Tutup</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+
+/* ===========================================================
+   STYLE TIDAK DIUBAH SAMA SEKALI
 =========================================================== */
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#B2DF20', alignItems: 'center' },
