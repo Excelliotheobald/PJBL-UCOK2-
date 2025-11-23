@@ -1,105 +1,100 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from "react";
+import { View, Text, StyleSheet, ScrollView, StatusBar,Image,TouchableOpacity } from "react-native";
+import Footerguru from "../Components/Footerguru";
+import { Bell, Camera } from 'lucide-react-native';
 
-const Footer: React.FC = () => {
+export default function Guru() {
   return (
-    <View style={styles.footerWrapper}>
-      {/* SVG Background Shape */}
-      <Svg
-        width={'100%'}
-        height={85}
-        viewBox="0 0 400 85"
-        style={styles.svgStyle}
-      >
-        <Path
-          d="
-          M0 40
-          Q100 0 150 80 
-          Q300 30 500 10 
-          L400 85 
-          L0 85
-          Z
-          "
-          fill="#ffffff"
-        />
-      </Svg>
+    
+    <View style={styles.header}>
+  {/* FOTO PROFIL (placeholder abu-abu) */}
+  <View style={styles.profileContainer}>
+    
+    <Image
+      source={{
+        uri: "https://cdn-icons-png.flaticon.com/512/1144/1144760.png",
+      }}
+      style={styles.profileImage}
+    />
 
-      {/* FAB */}
-      <TouchableOpacity style={styles.fabButton}>
-        <Text style={styles.fabIcon}>+</Text>
-      </TouchableOpacity>
-
-      {/* Tabs */}
-      <View style={styles.tabContainer}>
-        <TouchableOpacity style={styles.tab}>
-          <Icon name="home" size={24} color="#2E2EB8" />
-          <Text style={[styles.text, { color: '#2E2EB8' }]}>Beranda</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.tab}>
-          <Icon name="user" size={24} color="#C0C0C0" />
-          <Text style={[styles.text, { color: '#C0C0C0' }]}>Profil</Text>
-        </TouchableOpacity>
-      </View>
+    {/* TEKS SAPAAN */}
+    <View style={styles.textContainer}>
+      <Text style={styles.welcomeText}>
+        Halo, Pak Khoirul S 👋
+      </Text>
+      <Text style={styles.subWelcomeText}>
+        Selamat datang!
+      </Text>
     </View>
-  );
-};
+  </View>
 
-export default Footer;
+  {/* ICON NOTIF */}
+  <TouchableOpacity style={styles.notifButton}>
+    <Bell size={26} color="#FFFFFF" />
+    
+  </TouchableOpacity>
+  <ScrollView>
+    <StatusBar barStyle="light-content" backgroundColor="#2A3FD8" />
+    {/* Konten lainnya bisa ditambahkan di sini */}
+  </ScrollView>
+  
+</View>
+
+  );
+  
+}
 
 const styles = StyleSheet.create({
-  footerWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    alignItems: 'center',
-  },
+ header: {
+  backgroundColor: "#1E2CC1",
+  paddingHorizontal: 20,
+  paddingTop: 40,
+  paddingBottom: 20,
+  borderBottomLeftRadius: 30,
+  borderBottomRightRadius: 30,
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+},
 
-  svgStyle: {
-    position: 'absolute',
-    bottom: 0,
-  },
+profileContainer: {
+  flexDirection: "row",
+  alignItems: "center",
+},
 
-  tabContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingHorizontal: 50,
-    paddingBottom: 18,
-    paddingTop: 10,
-  },
+profileImage: {
+  width: 55,
+  height: 55,
+  borderRadius: 55 / 2,
+  backgroundColor: "#E0E0E0",
+  borderWidth: 2,
+  borderColor: "#FFFFFF",
+},
 
-  tab: {
-    alignItems: 'center',
-  },
+textContainer: {
+  marginLeft: 12,
+},
 
-  text: {
-    fontSize: 12,
-    marginTop: 4,
-  },
+welcomeText: {
+  color: "#FFFFFF",
+  fontSize: 18,
+  fontWeight: "700",
+},
 
-  fabButton: {
-    position: 'absolute',
-    top: -25,
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-    backgroundColor: '#2E2EB8',
-    alignItems: 'center',
-    justifyContent: 'center',
+subWelcomeText: {
+  color: "#D5D9FF",
+  fontSize: 14,
+  marginTop: 2,
+  fontWeight: "500",
+},
 
-    shadowColor: '#5A43FF',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 10,
-  },
+notifButton: {
+  width: 40,
+  height: 40,
+  borderRadius: 40 / 2,
+  backgroundColor: "rgba(255,255,255,0.2)",
+  alignItems: "center",
+  justifyContent: "center",
+},
 
-  fabIcon: {
-    color: 'white',
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
 });

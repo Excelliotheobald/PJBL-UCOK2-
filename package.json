@@ -21,6 +21,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react-native": "^0.554.0",
     "mongoose": "^8.19.3",
     "react": "19.1.0",
     "react-native": "0.81.4",
