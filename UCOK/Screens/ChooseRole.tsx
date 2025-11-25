@@ -67,9 +67,7 @@ export default function ChooseRole() {
     ).start();
   }, []);
 
-  /* ============================
-        OPEN MODAL BARU
-  ============================= */
+  //open modal
   const openModal = (type: "register" | "login" | "forgot") => {
     setShowRegister(false);
     setShowLogin(false);
@@ -206,9 +204,7 @@ export default function ChooseRole() {
   );
 }
 
-/* ===========================================================
-   REGISTER VIEW
-=========================================================== */
+//register view
 
 function RegisterView({ onClose, onSwitch, role, navigation }: any) {
   const [nama, setNama] = useState('');
@@ -272,9 +268,7 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
   );
 }
 
-/* ===========================================================
-   LOGIN VIEW
-=========================================================== */
+//login view
 
 function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
   const [email, setEmail] = useState("");
@@ -341,9 +335,7 @@ function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
   );
 }
 
-/* ===========================================================
-   FORGOT PASSWORD VIEW
-=========================================================== */
+//forgot password view
 
 function ForgotPasswordView({ onClose, onSwitch }: any) {
   const [email, setEmail] = useState("");
@@ -398,9 +390,7 @@ function ForgotPasswordView({ onClose, onSwitch }: any) {
 }
 
 
-/* ===========================================================
-   STYLE TIDAK DIUBAH SAMA SEKALI
-=========================================================== */
+//styles
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#B2DF20', alignItems: 'center' },
   tandatanya: { width: 90, height: 100, top: 140, tintColor: '#2F2FE0' },

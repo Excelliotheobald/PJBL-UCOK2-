@@ -6,7 +6,7 @@ import crypto from "crypto";
 const router = express.Router();
 
 /* ======================
-     REGISTER
+        REGISTER
 ====================== */
 router.post("/register", async (req, res) => {
   const { nama, email, password, role } = req.body;
@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
 });
 
 /* ======================
-        LOGIN
+          LOGIN
 ====================== */
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
 });
 
 /* ======================
-   FORGOT PASSWORD
+      FORGOT PASSWORD
 ====================== */
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
@@ -70,10 +70,9 @@ router.post("/forgot-password", async (req, res) => {
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 menit
     await user.save();
 
-    // BELUM KIRIM EMAIL, tapi kita balikan tokennya
     res.json({
       message: "Token reset dibuat",
-      resetToken, // sementara ditampilkan agar RN bisa lihat
+      resetToken,
     });
   } catch (err) {
     res.status(500).json({ message: "Server error" });

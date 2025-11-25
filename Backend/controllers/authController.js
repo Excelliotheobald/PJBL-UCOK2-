@@ -1,4 +1,4 @@
-import User from "../models/user.js";
+import User from "../models/userModel.js";
 import crypto from "crypto";
 
 // KIRIM KODE RESET (FORGOT PASSWORD)

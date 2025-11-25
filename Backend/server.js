@@ -10,14 +10,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🧩 Routes
+// Routes
 app.use("/api/users", userRoutes);
 
-// 🌐 Connect ke MongoDB
+// Connect MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Terhubung ke MongoDB Atlas"))
   .catch(err => console.error("❌ Gagal konek MongoDB:", err));
 
-// 🚀 Jalankan server
+// Run Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server berjalan di port ${PORT}`));
