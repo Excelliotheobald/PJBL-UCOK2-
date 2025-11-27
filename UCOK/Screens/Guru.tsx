@@ -1,100 +1,102 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, StatusBar,Image,TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import Footerguru from "../Components/Footerguru";
-import { Bell, Camera } from 'lucide-react-native';
+import { Bell } from "lucide-react-native";
 
 export default function Guru() {
   return (
-    
-    <View style={styles.header}>
-  {/* FOTO PROFIL (placeholder abu-abu) */}
-  <View style={styles.profileContainer}>
-    
-    <Image
-      source={{
-        uri: "https://cdn-icons-png.flaticon.com/512/1144/1144760.png",
-      }}
-      style={styles.profileImage}
-    />
+    <View style={{ flex: 1 }}> 
+      {/* HEADER */}
+      <View style={styles.header}>
+        <View style={styles.profileContainer}>
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/1144/1144760.png",
+            }}
+            style={styles.profileImage}
+          />
 
-    {/* TEKS SAPAAN */}
-    <View style={styles.textContainer}>
-      <Text style={styles.welcomeText}>
-        Halo, Pak Khoirul S 👋
-      </Text>
-      <Text style={styles.subWelcomeText}>
-        Selamat datang!
-      </Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.welcomeText}>Halo, Pak Khoirul S 👋</Text>
+            <Text style={styles.subWelcomeText}>Selamat datang!</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity style={styles.notifButton}>
+          <Bell size={26} color="#FFFFFF" />
+        </TouchableOpacity>
+      </View>
+
+      {/* SCROLLVIEW KONTEN */}
+      <ScrollView style={{ flex: 1 }}>
+        <StatusBar barStyle="light-content" backgroundColor="#2A3FD8" />
+      </ScrollView>
+
+      {/* FOOTER */}
+   <Footerguru activeTab="home" />
+
     </View>
-  </View>
-
-  {/* ICON NOTIF */}
-  <TouchableOpacity style={styles.notifButton}>
-    <Bell size={26} color="#FFFFFF" />
-    
-  </TouchableOpacity>
-  <ScrollView>
-    <StatusBar barStyle="light-content" backgroundColor="#2A3FD8" />
-    {/* Konten lainnya bisa ditambahkan di sini */}
-  </ScrollView>
-  
-</View>
-
   );
-  
 }
 
 const styles = StyleSheet.create({
- header: {
-  backgroundColor: "#1E2CC1",
-  paddingHorizontal: 20,
-  paddingTop: 40,
-  paddingBottom: 20,
-  borderBottomLeftRadius: 30,
-  borderBottomRightRadius: 30,
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-},
+  header: {
+    backgroundColor: "#1E2CC1",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 20,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
 
-profileContainer: {
-  flexDirection: "row",
-  alignItems: "center",
-},
+  profileContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 
-profileImage: {
-  width: 55,
-  height: 55,
-  borderRadius: 55 / 2,
-  backgroundColor: "#E0E0E0",
-  borderWidth: 2,
-  borderColor: "#FFFFFF",
-},
+  profileImage: {
+    width: 55,
+    height: 55,
+    borderRadius: 55 / 2,
+    backgroundColor: "#E0E0E0",
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+  },
 
-textContainer: {
-  marginLeft: 12,
-},
+  textContainer: {
+    marginLeft: 12,
+  },
 
-welcomeText: {
-  color: "#FFFFFF",
-  fontSize: 18,
-  fontWeight: "700",
-},
+  welcomeText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "700",
+  },
 
-subWelcomeText: {
-  color: "#D5D9FF",
-  fontSize: 14,
-  marginTop: 2,
-  fontWeight: "500",
-},
+  subWelcomeText: {
+    color: "#D5D9FF",
+    fontSize: 14,
+    marginTop: 2,
+    fontWeight: "500",
+  },
 
-notifButton: {
-  width: 40,
-  height: 40,
-  borderRadius: 40 / 2,
-  backgroundColor: "rgba(255,255,255,0.2)",
-  alignItems: "center",
-  justifyContent: "center",
-},
-
+  notifButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 40 / 2,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

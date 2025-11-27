@@ -9,10 +9,11 @@ import {
   StatusBar,
 } from "react-native";
 
-export default function StudentDashboard() {
+import Footersiswa from "../Components/Footersiswa"; // ⬅️ IMPORT FOOTER
+
+export default function Siswa() {
   const handleLogout = () => {
-    // contoh aksi logout
-    ("Kamu telah logout");
+    console.log("Kamu telah logout");
   };
 
   return (
@@ -39,78 +40,74 @@ export default function StudentDashboard() {
         </TouchableOpacity>
       </View>
 
-      {/* Info Hari */}
-      <View style={styles.dateCard}>
-        <Text style={styles.dateText}>29</Text>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.dayText}>Senin</Text>
-          <Text style={styles.subDayText}>November 2027</Text>
-        </View>
-        <View>
-          <Text style={styles.smallText}>Belum ada jadwal</Text>
-          <Text style={styles.smallText}>hari ini</Text>
-        </View>
-      </View>
-
-      {/* Kelas dan Jurusan */}
-      <View style={styles.infoRow}>
-        <Text style={styles.infoBadge}>Kelas 11 SMK</Text>
-        <Text style={styles.infoBadge}>Jurusan PPLG</Text>
-      </View>
-
-      {/* Foto Kelas */}
-      <Image
-        source={{
-          uri: "https://images.unsplash.com/photo-1600172454537-1b7e3b1d8c19?auto=format&fit=crop&w=800&q=60",
-        }}
-        style={styles.classImage}
-      />
-
-      {/* Jadwal */}
-      <Text style={styles.sectionTitle}>Jadwal</Text>
-
-      <ScrollView style={styles.scheduleList}>
-        {[
-          {
-            subject: "Matematika",
-            date: "1 Desember 2027",
-            time: "08.00 - 10.00",
-          },
-          {
-            subject: "Bahasa Indonesia",
-            date: "2 Desember 2027",
-            time: "08.00 - 10.00",
-          },
-          {
-            subject: "Matematika",
-            date: "3 Desember 2027",
-            time: "08.00 - 10.00",
-          },
-        ].map((item, index) => (
-          <View key={index} style={styles.scheduleCard}>
-            <View>
-              <Text style={styles.subjectText}>{item.subject}</Text>
-              <Text style={styles.dateSmall}>{item.date}</Text>
-            </View>
-            <View>
-              <Text style={styles.timeText}>{item.time}</Text>
-              <TouchableOpacity style={styles.startButton}>
-                <Text style={styles.startText}>Mulai Ujian</Text>
-              </TouchableOpacity>
-            </View>
+      {/* Konten Scroll */}
+      <ScrollView style={{ flex: 1 }}>
+        {/* Info Hari */}
+        <View style={styles.dateCard}>
+          <Text style={styles.dateText}>29</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.dayText}>Senin</Text>
+            <Text style={styles.subDayText}>November 2027</Text>
           </View>
-        ))}
+          <View>
+            <Text style={styles.smallText}>Belum ada jadwal</Text>
+            <Text style={styles.smallText}>hari ini</Text>
+          </View>
+        </View>
+
+        {/* Kelas dan Jurusan */}
+        <View style={styles.infoRow}>
+          <Text style={styles.infoBadge}>Kelas 11 SMK</Text>
+          <Text style={styles.infoBadge}>Jurusan PPLG</Text>
+        </View>
+
+        {/* Foto Kelas */}
+        <Image
+          source={{
+            uri: "https://images.unsplash.com/photo-1600172454537-1b7e3b1d8c19",
+          }}
+          style={styles.classImage}
+        />
+
+        {/* Jadwal */}
+        <Text style={styles.sectionTitle}>Jadwal</Text>
+
+        <View style={styles.scheduleList}>
+          {[ 
+            {
+              subject: "Matematika",
+              date: "1 Desember 2027",
+              time: "08.00 - 10.00",
+            },
+            {
+              subject: "Bahasa Indonesia",
+              date: "2 Desember 2027",
+              time: "08.00 - 10.00",
+            },
+            {
+              subject: "Matematika",
+              date: "3 Desember 2027",
+              time: "08.00 - 10.00",
+            },
+          ].map((item, index) => (
+            <View key={index} style={styles.scheduleCard}>
+              <View>
+                <Text style={styles.subjectText}>{item.subject}</Text>
+                <Text style={styles.dateSmall}>{item.date}</Text>
+              </View>
+              <View>
+                <Text style={styles.timeText}>{item.time}</Text>
+                <TouchableOpacity style={styles.startButton}>
+                  <Text style={styles.startText}>Mulai Ujian</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))}
+        </View>
       </ScrollView>
 
-      {/* Bottom Navbar */}
-      <View style={styles.navbar}>
-        <TouchableOpacity>
-          <Text style={styles.navTextActive}>🏠 Beranda</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.navText}>👤 Profil</Text>
-        </TouchableOpacity>
-      </View>
+      {/* FOOTER (pakai yang sama seperti guru) */}
+      <Footersiswa activeTab="home" />
     </View>
   );
 }
@@ -120,6 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F6F7FB",
   },
+
   header: {
     backgroundColor: "#2A3FD8",
     padding: 20,
@@ -157,6 +155,7 @@ const styles = StyleSheet.create({
     color: "#2A3FD8",
     fontWeight: "bold",
   },
+
   dateCard: {
     backgroundColor: "#fff",
     margin: 20,
@@ -164,9 +163,6 @@ const styles = StyleSheet.create({
     padding: 15,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
     elevation: 4,
   },
   dateText: {
@@ -178,6 +174,7 @@ const styles = StyleSheet.create({
   dayText: { fontSize: 18, fontWeight: "600" },
   subDayText: { color: "#777" },
   smallText: { fontSize: 12, color: "#777" },
+
   infoRow: {
     flexDirection: "row",
     justifyContent: "center",
@@ -191,6 +188,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     fontWeight: "600",
   },
+
   classImage: {
     height: 140,
     width: "90%",
@@ -198,6 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginVertical: 15,
   },
+
   sectionTitle: {
     marginLeft: 25,
     fontSize: 18,
@@ -205,9 +204,11 @@ const styles = StyleSheet.create({
     color: "#222",
     marginBottom: 10,
   },
+
   scheduleList: {
     paddingHorizontal: 20,
   },
+
   scheduleCard: {
     backgroundColor: "#2A3FD8",
     borderRadius: 15,
@@ -217,13 +218,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+
   subjectText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "700",
   },
   dateSmall: { color: "#C6D1FF", fontSize: 13 },
-  timeText: { color: "#fff", fontSize: 13, marginBottom: 5 },
+  timeText: { color: "#fff", fontSize: 13 },
+
   startButton: {
     backgroundColor: "#A8F400",
     paddingVertical: 6,
@@ -231,14 +234,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   startText: { color: "#000", fontWeight: "700" },
-  navbar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "#fff",
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: "#eee",
-  },
-  navText: { color: "#999" },
-  navTextActive: { color: "#2A3FD8", fontWeight: "700" },
 });

@@ -8,8 +8,8 @@ import ChooseRole from "./UCOK/Screens/ChooseRole";
 import Guru from "./UCOK/Screens/Guru";
 import Siswa from "./UCOK/Screens/Siswa";
 
-// Import halaman profil guru — PASTIKAN BENAR
 import Profileguru from "./UCOK/Screens/Profileguru";
+import Profilesiswa from "./UCOK/Screens/Profilesiswa";  
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -17,7 +17,8 @@ export type RootStackParamList = {
   ChooseRole: undefined;
   Guru: undefined;
   Siswa: undefined;
-  Profileguru: undefined; // halaman profil
+  Profileguru: undefined;
+  Profilesiswa: undefined;           
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -35,8 +36,8 @@ export default function App() {
         <Stack.Screen name="Guru" component={Guru} />
         <Stack.Screen name="Siswa" component={Siswa} />
 
-        {/* REGISTER PAGE PROFILE */}
         <Stack.Screen name="Profileguru" component={Profileguru} />
+        <Stack.Screen name="Profilesiswa" component={Profilesiswa} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
