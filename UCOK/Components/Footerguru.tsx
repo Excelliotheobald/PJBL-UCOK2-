@@ -14,9 +14,9 @@ const TAB_BAR_HEIGHT = 90;
 const GAP = 15;
 
 const COLORS = {
-  primary: "#1D1A9B",
-  background: "#ffffff",
-  textActive: "#1D1A9B",
+  primary: "#1E2CC1",
+  background: "#f9f9f9",
+  textActive: "#1E2CC1",
   textInactive: "#9DB2CE",
 };
 
@@ -119,6 +119,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     height: TAB_BAR_HEIGHT,
+    zIndex: 4,
+    ...Platform.select({
+      android: { elevation: 30 },
+      
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.50,
+        shadowOffset: { width: 0, height: -4 },
+        shadowRadius: 10,
+        
+      },
+    }),
   },
 
   svg: {
@@ -166,19 +178,19 @@ const styles = StyleSheet.create({
     left: width / 2 - CENTER_BUTTON_SIZE / 2,
     width: CENTER_BUTTON_SIZE,
     height: CENTER_BUTTON_SIZE,
-    borderRadius: CENTER_BUTTON_SIZE / 2,
-    backgroundColor: COLORS.primary,
-    alignItems: "center",
+    borderRadius:  100,
+   
     justifyContent: "center",
-    borderColor: "#fff",
-    borderWidth: 3,
+   
     zIndex: 3,
+ backgroundColor: COLORS.primary,
+alignItems: "center",
 
     ...Platform.select({
       android: { elevation: 10 },
       ios: {
-        shadowColor: "#000",
-        shadowOpacity: 0.25,
+        shadowColor: "#1E2CC1",
+        shadowOpacity: 0.50,
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 5,
       },

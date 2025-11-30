@@ -6,7 +6,9 @@ import Footerguru from "../Components/Footerguru";
 
 export default function Profileguru() {
   return (
+    
     <View style={styles.container}>
+      
       {/* ====== CONTENT ====== */}
       <View style={styles.content}>
         <Text style={styles.pageTitle}>Halaman Profil Guru</Text>

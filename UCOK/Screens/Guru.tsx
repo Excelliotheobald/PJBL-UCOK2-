@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
@@ -7,71 +7,412 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
-} from "react-native";
-import Footerguru from "../Components/Footerguru";
-import { Bell } from "lucide-react-native";
+  SafeAreaView,
+} from 'react-native';
+import Svg, { Rect } from 'react-native-svg';
+import Footerguru from '../Components/Footerguru';
+import { Dimensions } from 'react-native';
+import { icons, Users, BookOpen } from 'lucide-react-native';
+
+const { width } = Dimensions.get('window');
+const HEADER_HEIGHT = 230;
 
 export default function Guru() {
   return (
-    <View style={{ flex: 1 }}> 
-      {/* HEADER */}
-      <View style={styles.header}>
-        <View style={styles.profileContainer}>
-          <Image
-            source={{
-              uri: "https://cdn-icons-png.flaticon.com/512/1144/1144760.png",
-            }}
-            style={styles.profileImage}
-          />
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#EEEEF3' , }} >
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 100 }} // ruang agar konten tidak ketutup footer
+      >
+        <View style={{ flex: 1, backgroundColor: '#EEEEF3' }}>
+          {/* 🔵 HEADER BARU */}
+          <View style={styles.headerWrapper}>
+            {/* Lingkaran 1 */}
+            <View style={styles.curve1} />
+            {/* Lingkaran 2 */}
+            <View style={styles.curve} />
 
-          <View style={styles.textContainer}>
-            <Text style={styles.welcomeText}>Halo, Pak Khoirul S 👋</Text>
-            <Text style={styles.subWelcomeText}>Selamat datang!</Text>
+            {/* Latar belakang utama */}
+            <Svg height={HEADER_HEIGHT} width={width}>
+              <Rect
+                x="0"
+                y="0"
+                width={width}
+                height={HEADER_HEIGHT}
+                fill="#1D1A9B"
+              />
+            </Svg>
+
+            {/* Profil + teks */}
+            <View style={styles.profileContainer}>
+              <Image
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png',
+                }}
+                style={styles.profileImage}
+              />
+
+              <View style={styles.textContainer}>
+                <Text style={styles.welcomeText}>Halo, Pak Khoirul S 👋</Text>
+                <Text style={styles.subWelcomeText}>Selamat datang!</Text>
+              </View>
+            </View>
           </View>
+
+          {/* 🔵 BOX STATUS */}
+          <View style={styles.statsContainer}>
+            <View style={styles.statBox}>
+              <Text style={styles.statNumber}>0</Text>
+              <Text style={styles.statLabel}>Selesai</Text>
+            </View>
+
+            <View style={styles.statBox}>
+              <Text style={styles.statNumber}>0</Text>
+              <Text style={styles.statLabel}>Mengerjakan</Text>
+            </View>
+
+            <View style={styles.statBox}>
+              <Text style={styles.statNumber}>0</Text>
+              <Text style={styles.statLabel}>Belum Mulai</Text>
+            </View>
+          </View>
+
+          {/* box buat soal */}
+          <View style={styles.boxbuatsoal}>
+            <View style={styles.icon}>
+              <Users size={32} color="#1D1A9B" strokeWidth={2.5} />
+            </View>
+
+            <Text style={styles.judul}>Belum Ada Kelas</Text>
+
+            <Text style={styles.subtitle}>
+              Buat kelas pertama untuk memulai ujian dan membuat soal.
+            </Text>
+
+            <TouchableOpacity style={styles.createBtn}>
+              <Text style={styles.createBtnText}>+ Buat Kelas</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.anjay}>Langkah Memulai ❗</Text>
+
+                <View style={styles.wrapper1}>
+
+  {/* STEP 1 */}
+  <View style={styles.card}>
+    <View style={styles.circle}>
+      <Text style={styles.circleText}>1</Text>
+    </View>
+    <View style={styles.textBox}>
+      <Text style={styles.title}>Buat Kelas</Text>
+      <Text style={styles.desc}>
+        Buat kelas baru dengan mengisi nama mata pelajaran, tingkat
+        kelas, dan informasi lainnya.
+      </Text>
+
+      <TouchableOpacity>
+        <Text style={styles.link}>Buat Kelas →</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+
+  {/* STEP 2 */}
+  <View style={[styles.card, styles.activeCard]}>
+    <View style={styles.circle}>
+      <Text style={styles.circleText}>2</Text>
+    </View>
+    <View style={styles.textBox}>
+      <Text style={styles.title}>Tambah Siswa</Text>
+      <Text style={styles.desc}>
+        Tambahkan siswa ke kelas dengan mengundang mereka atau input
+        manual data siswa.
+      </Text>
+    </View>
+  </View>
+
+  {/* STEP 3 */}
+  <View style={styles.card}>
+    <View style={styles.circle}>
+      <Text style={styles.circleText}>3</Text>
+    </View>
+    <View style={styles.textBox}>
+      <Text style={styles.title}>Buat Soal Ujian</Text>
+      <Text style={styles.desc}>
+        Buat soal ujian pilihan ganda pada kelas.
+      </Text>
+    </View>
+  </View>
+
+  {/* STEP 4 */}
+  <View style={styles.card}>
+    <View style={styles.circle}>
+      <Text style={styles.circleText}>4</Text>
+    </View>
+    <View style={styles.textBox}>
+      <Text style={styles.title}>Jadwalkan Ujian</Text>
+      <Text style={styles.desc}>
+        Atur jadwal dan durasi ujian, lalu publikasikan untuk siswa.
+      </Text>
+    </View>
+  </View>
+
+  {/* TIPS BOX */}
+  <View style={styles.tipsBox}>
+    <Text style={styles.tipsTitle}>Tips Membuat Ujian yang Baik 💡</Text>
+
+    <Text style={styles.tipsItem}>• Buat soal dengan tingkat kesulitan bervariasi</Text>
+    <Text style={styles.tipsItem}>• Pastikan instruksi soal jelas dan mudah dipahami</Text>
+    <Text style={styles.tipsItem}>• Atur waktu ujian sesuai jumlah dan kesulitan soal</Text>
+    <Text style={styles.tipsItem}>• Cek kembali kunci jawaban sebelum publikasi</Text>
+  </View>
+
+  {/* BUTUH BANTUAN */}
+  <View style={styles.helpBox}>
+    <BookOpen size={42} color="#2A34D9" />
+    <Text style={styles.helpTitle}>Butuh Bantuan?</Text>
+    <Text style={styles.helpDesc}>
+      Baca panduan lengkap cara menggunakan aplikasi
+    </Text>
+
+    <TouchableOpacity>
+      <Text style={styles.link}>Baca Panduan →</Text>
+    </TouchableOpacity>
+  </View>
+
+</View>
+
+
         </View>
-
-        <TouchableOpacity style={styles.notifButton}>
-          <Bell size={26} color="#FFFFFF" />
-        </TouchableOpacity>
-      </View>
-
-      {/* SCROLLVIEW KONTEN */}
-      <ScrollView style={{ flex: 1 }}>
-        <StatusBar barStyle="light-content" backgroundColor="#2A3FD8" />
       </ScrollView>
 
-      {/* FOOTER */}
-   <Footerguru activeTab="home" />
-
-    </View>
+      <View style={styles.footerFixed}>
+        <Footerguru activeTab="home" />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "#1E2CC1",
-    paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 20,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+  headerWrapper: {
+    height: HEADER_HEIGHT,
+    borderBottomLeftRadius: 35,
+    borderBottomRightRadius: 35,
+    overflow: 'hidden',
+  },
+
+   wrapper1: {
+    padding: 16,
+    backgroundColor: "#F5F6FA",
+  },
+
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 16,
     flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 12
+  },
+
+  activeCard: {
+   
+  },
+
+  circle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#E5E7F5",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
+  },
+
+  circleText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#2A34D9",
+  },
+
+  textBox: {
+    flex: 1
+  },
+
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+    color: "#000"
+  },
+
+  desc: {
+    fontSize: 13,
+    color: "#555",
+    lineHeight: 18
+  },
+
+  link: {
+    marginTop: 8,
+    color: "#2A34D9",
+    fontWeight: "600"
+  },
+
+  /* TIPS */
+  tipsBox: {
+    backgroundColor: "#ECF8DB",
+    padding: 16,
+    borderRadius: 18,
+    marginTop: 4
+  },
+
+  tipsTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#000"
+  },
+
+  tipsItem: {
+    fontSize: 13,
+    marginBottom: 6,
+    color: "#333"
+  },
+
+  /* HELP */
+  helpBox: {
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+    borderRadius: 18,
+    marginTop: 16
+  },
+
+  helpTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 6
+  },
+
+  helpDesc: {
+    fontSize: 13,
+    textAlign: "center",
+    color: "#555",
+    marginBottom: 8
+  },
+
+  footerFixed: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    zIndex: 10,
+    elevation: 10,
+  },
+
+  anjay: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#000',
+    marginLeft: 25,
+    marginTop: 20,
+  },
+
+  createBtn: {
+    backgroundColor: '#1D1A9B',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+  },
+
+  createBtnText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+
+  subtitle: {
+    fontSize: 12,
+    color: '#000',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+
+  judul: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#000',
+    marginBottom: 5,
+  },
+
+  icon: {
+    backgroundColor: '#EDEAFF',
+    padding: 20,
+    borderRadius: 50,
+    marginBottom: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  boxbuatsoal: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingVertical: 30,
+    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    marginTop: 20,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    elevation: 2,
+  },
+
+  curve: {
+    position: 'absolute',
+    width: width * 1.9,
+    height: width * 1.9,
+    backgroundColor: '#2926AA',
+    borderRadius: (width * 1.9) / 2,
+    top: -width * 1.45,
+    left: -width * 0.2,
+    transform: [{ rotate: '28deg' }],
+    zIndex: 1,
+  },
+
+  curve1: {
+    position: 'absolute',
+    width: width * 1.9,
+    height: width * 1.9,
+    backgroundColor: '#3431C1',
+    borderRadius: (width * 1.9) / 2,
+    top: -width * 1.65,
+    left: -width * 0.1,
+    transform: [{ rotate: '28deg' }],
+    zIndex: 2,
   },
 
   profileContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 70,
+    marginLeft: 20,
+    zIndex: 5,
+    position: 'absolute',
   },
 
   profileImage: {
-    width: 55,
-    height: 55,
-    borderRadius: 55 / 2,
-    backgroundColor: "#E0E0E0",
-    borderWidth: 2,
-    borderColor: "#FFFFFF",
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+    backgroundColor: '#ccc',
+    borderWidth: 3,
+    borderColor: '#FFF',
   },
 
   textContainer: {
@@ -79,24 +420,47 @@ const styles = StyleSheet.create({
   },
 
   welcomeText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 
   subWelcomeText: {
-    color: "#D5D9FF",
+    color: '#D5D9FF',
     fontSize: 14,
     marginTop: 2,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 
-  notifButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginTop: -35,
+  },
+
+  statBox: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    width: '32%',
+    paddingVertical: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 5,
+  },
+
+  statNumber: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#000',
+  },
+
+  statLabel: {
+    marginTop: 4,
+    fontSize: 15,
+    color: '#333',
   },
 });
