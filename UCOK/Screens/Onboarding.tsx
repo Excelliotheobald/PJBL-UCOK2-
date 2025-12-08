@@ -12,12 +12,28 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';   // ⭐ DITAMBAH TANPA MENGUBAH YANG LAIN
 
 const { width, height } = Dimensions.get('window');
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 
 export default function Onboarding({ navigation }: Props) {
+  // ⭐ DITAMBAH — CEK LOGIN TANPA MENGUBAH KODE YANG LAIN
+  useEffect(() => {
+    const checkLogin = async () => {
+      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+      const role = await AsyncStorage.getItem("role");
+
+      if (isLoggedIn === "true") {
+        if (role === "guru") navigation.replace("Guru");
+        else navigation.replace("Siswa");
+      }
+    };
+    checkLogin();
+  }, []);
+  // ⭐ END PENAMBAHAN
+
   const scrollRef = useRef<ScrollView>(null);
   const [page, setPage] = useState(0);
 

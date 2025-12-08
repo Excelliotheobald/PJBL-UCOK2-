@@ -12,6 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -63,11 +64,10 @@ export default function ChooseRole() {
             useNativeDriver: true,
           }),
         ]),
-      ]),
+      ])
     ).start();
   }, []);
 
-  //open modal
   const openModal = (type: "register" | "login" | "forgot") => {
     setShowRegister(false);
     setShowLogin(false);
@@ -157,13 +157,24 @@ export default function ChooseRole() {
           </View>
         </TouchableOpacity>
 
+        {/* ================================ */}
+        {/* ⭐ FIX DIPASANG DI SINI */}
+        {/* ================================ */}
+
         <TouchableOpacity
           style={[styles.button, { opacity: selectedRole ? 1 : 0.5 }]}
           disabled={!selectedRole}
-          onPress={() => openModal('register')}
+          onPress={async () => {
+            // ⭐ FIX: Simpan role ke AsyncStorage sebelum register
+            if (selectedRole) {
+              await AsyncStorage.setItem("role", selectedRole);
+            }
+            openModal('register');
+          }}
         >
           <Text style={styles.buttonText}>Pilih Peranmu</Text>
         </TouchableOpacity>
+
       </View>
 
       {(showRegister || showLogin || showForgot) && (
@@ -204,7 +215,9 @@ export default function ChooseRole() {
   );
 }
 
-//register view
+
+
+// ================= REGISTER VIEW =================
 
 function RegisterView({ onClose, onSwitch, role, navigation }: any) {
   const [nama, setNama] = useState('');
@@ -229,8 +242,13 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
 
       Alert.alert('Sukses', 'Registrasi berhasil!');
 
+      // === AUTO LOGIN ===
+      await AsyncStorage.setItem("isLoggedIn", "true");
+      await AsyncStorage.setItem("role", role);
+
       if (role === 'guru') navigation.navigate('Guru' as never);
       else navigation.navigate('Siswa' as never);
+
     } catch (err) {
       Alert.alert('Error', 'Tidak bisa terhubung ke server.');
       console.error(err);
@@ -268,7 +286,9 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
   );
 }
 
-//login view
+
+
+// ================= LOGIN VIEW =================
 
 function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
   const [email, setEmail] = useState("");
@@ -292,8 +312,12 @@ function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
 
       Alert.alert('Berhasil', 'Login sukses!');
 
+      await AsyncStorage.setItem("isLoggedIn", "true");
+      await AsyncStorage.setItem("role", data.user.role);
+
       if (data.user.role === 'guru') navigation.navigate('Guru' as never);
       else navigation.navigate('Siswa' as never);
+
     } catch (err) {
       Alert.alert('Error', 'Tidak bisa terhubung ke server.');
       console.error(err);
@@ -319,7 +343,6 @@ function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
         <Text style={styles.modalButtonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* LUPA PASSWORD */}
       <TouchableOpacity onPress={onForgot}>
         <Text style={styles.registerText}>Lupa Password?</Text>
       </TouchableOpacity>
@@ -335,7 +358,9 @@ function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
   );
 }
 
-//forgot password view
+
+
+// ================= FORGOT VIEW =================
 
 function ForgotPasswordView({ onClose, onSwitch }: any) {
   const [email, setEmail] = useState("");
@@ -390,7 +415,9 @@ function ForgotPasswordView({ onClose, onSwitch }: any) {
 }
 
 
-//styles
+
+// ================= STYLES =================
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#B2DF20', alignItems: 'center' },
   tandatanya: { width: 90, height: 100, top: 140, tintColor: '#2F2FE0' },
