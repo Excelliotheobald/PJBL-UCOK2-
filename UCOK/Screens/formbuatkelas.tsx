@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   Platform,
   StatusBar,
   Animated,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
 } from "react-native";
 import {
   ChevronLeft,
@@ -18,6 +20,72 @@ import {
   GraduationCap,
   Sparkles,
 } from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
+type InputFieldProps = {
+  label: string;
+  value: string;
+  onChangeText: (t: string) => void;
+  icon: React.ReactNode;
+};
+
+const InputField = ({ label, value, onChangeText, icon }: any) => {
+  const [focused, setFocused] = useState(false);
+  const scaleAnim = new Animated.Value(1);
+
+  const handleFocus = (e: any) => {
+    setFocused(true);
+    Animated.spring(scaleAnim, {
+      toValue: 1.02,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleBlur = (e: any) => {
+    setFocused(false);
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <Animated.View
+      style={[
+        styles.inputWrapper,
+        {
+          transform: [{ scale: scaleAnim }],
+          borderColor: focused ? "#3246ff" : "#ccc",
+          shadowOpacity: focused ? 0.2 : 0.05,
+        },
+      ]}
+    >
+      <View style={styles.iconContainer}>{icon}</View>
+
+      <Text
+        style={[
+          styles.floatingLabel,
+          {
+            top: value || focused ? -10 : 14,
+            fontSize: value || focused ? 12 : 16,
+            color: focused ? "#3246ff" : "#777",
+          },
+        ]}
+      >
+        {label}
+      </Text>
+
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        style={styles.input}
+      />
+    </Animated.View>
+  );
+};
 
 export default function FormBuatKelas({ navigation }: any) {
   const [namaKelas, setNamaKelas] = useState("");
@@ -26,70 +94,36 @@ export default function FormBuatKelas({ navigation }: any) {
   const [mapel, setMapel] = useState("");
 
   const isFilled = namaKelas && bagian && ruang && mapel;
-  const semuaKosong = !namaKelas && !bagian && !ruang && !mapel;
 
-  const simpanKelas = () => {
-    if (!isFilled) return;
-    const dataKelas = { namaKelas, bagian, ruang, mapel };
-    navigation.navigate("Guru", { kelasBaru: dataKelas });
+  const simpanKelas = async () => {
+  if (!isFilled) return;
+
+  const dataKelasBaru = { 
+    namaKelas, 
+    bagian, 
+    ruang, 
+    mapel 
   };
 
-  const InputField = ({ label, value, onChangeText, icon }: any) => {
-    const [focused, setFocused] = useState(false);
-    const scaleAnim = new Animated.Value(1);
+  try {
+    // Ambil data lama dari AsyncStorage
+    const dataLama = await AsyncStorage.getItem("kelas");
+    let arrKelas = dataLama ? JSON.parse(dataLama) : [];
 
-    const handleFocus = () => {
-      setFocused(true);
-      Animated.spring(scaleAnim, {
-        toValue: 1.02,
-        useNativeDriver: true,
-      }).start();
-    };
+    // Tambah data baru
+    arrKelas.push(dataKelasBaru);
 
-    const handleBlur = () => {
-      setFocused(false);
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-      }).start();
-    };
+    // Simpan lagi ke AsyncStorage
+    await AsyncStorage.setItem("kelas", JSON.stringify(arrKelas));
 
-    return (
-      <Animated.View
-        style={[
-          styles.inputWrapper,
-          {
-            transform: [{ scale: scaleAnim }],
-            borderColor: focused ? "#3246ff" : "#ccc",
-            shadowOpacity: focused ? 0.2 : 0.05,
-          },
-        ]}
-      >
-        <View style={styles.iconContainer}>{icon}</View>
+    // Kembali ke Guru.tsx
+    navigation.navigate("Guru");
 
-        <Text
-          style={[
-            styles.floatingLabel,
-            {
-              top: value || focused ? -10 : 14,
-              fontSize: value || focused ? 12 : 16,
-              color: focused ? "#3246ff" : "#777",
-            },
-          ]}
-        >
-          {label}
-        </Text>
+  } catch (error) {
+    console.log("Error simpan kelas:", error);
+  }
+};
 
-        <TextInput
-          value={value}
-          onChangeText={onChangeText}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          style={styles.input}
-        />
-      </Animated.View>
-    );
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -120,17 +154,15 @@ export default function FormBuatKelas({ navigation }: any) {
       </View>
 
       <View style={styles.form}>
-        {/* ===== CARD MOTIVASI ===== */}
-        {semuaKosong && (
-          <View style={styles.motivasiCard}>
-            <Sparkles size={32} color="#3246ff" />
-            <Text style={styles.motivasiTitle}>Ayo Buat Kelas mu!</Text>
-            <Text style={styles.motivasiDesc}>
-              Mulailah dengan mengisi nama kelas di atas. Kamu bisa membuat
-              ruang belajar yang keren untuk murid-muridmu!
-            </Text>
-          </View>
-        )}
+        {/* ===== CARD MOTIVASI (TETAP DI ATAS) ===== */}
+        <View style={styles.motivasiCard}>
+          <Sparkles size={32} color="#3246ff" />
+          <Text style={styles.motivasiTitle}>Ayo Buat Kelas mu!</Text>
+          <Text style={styles.motivasiDesc}>
+            Mulailah dengan mengisi nama kelas di bawah. Kamu bisa membuat ruang
+            belajar yang keren untuk murid-muridmu!
+          </Text>
+        </View>
 
         {/* ===== INPUTS ===== */}
         <InputField
@@ -203,7 +235,7 @@ const styles = StyleSheet.create({
     borderColor: "#d5e3ff",
     padding: 18,
     borderRadius: 14,
-    marginBottom: 20,
+    marginBottom: 16,
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.08,

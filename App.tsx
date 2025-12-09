@@ -11,6 +11,7 @@ import Siswa from "./UCOK/Screens/Siswa";
 import Profileguru from "./UCOK/Screens/Profileguru";
 import Profilesiswa from "./UCOK/Screens/Profilesiswa";  
 import formbuatkelas from "./UCOK/Screens/formbuatkelas";  
+import DetailKelasGuru from "./UCOK/Screens/DetailKelasGuru";
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -20,10 +21,13 @@ export type RootStackParamList = {
   Siswa: undefined;
   Profileguru: undefined;
   Profilesiswa: undefined;    
-  formbuatkelas: undefined;       
+  formbuatkelas: undefined;  
+    
+   DetailKelasGuru: { kelas: any };   
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
 
 export default function App() {
   return (
@@ -41,6 +45,9 @@ export default function App() {
         <Stack.Screen name="Profileguru" component={Profileguru} />
         <Stack.Screen name="Profilesiswa" component={Profilesiswa} /> 
          <Stack.Screen name="formbuatkelas" component={formbuatkelas} /> 
+          <Stack.Screen name="DetailKelasGuru" component={DetailKelasGuru} />
+         
+
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -16,9 +16,12 @@ import type { RootStackParamList } from "../../App";
 
 const { width } = Dimensions.get("window");
 
+/* ====== PERUBAHAN DISINI ====== */
 const CENTER_BUTTON_SIZE = 65;
-const TAB_BAR_HEIGHT = 80;
+const TAB_BAR_HEIGHT = 105; // ⬆️ DULU 80 → SEKARANG 105 (lebih naik & tebal)
 const GAP = 15;
+const CURVE_DEPTH = 55; // ⬆️ DULU 40 → SEKARANG 55 (agar proporsional)
+/* ================================= */
 
 const COLORS = {
   primary: "#1E2CC1",
@@ -31,7 +34,6 @@ const R = CENTER_BUTTON_SIZE / 1.5;
 const CX = width / 2;
 const X1 = CX - R - GAP;
 const X2 = CX + R + GAP;
-const CURVE_DEPTH = 40;
 const H = TAB_BAR_HEIGHT;
 
 const getPath = () => `
@@ -53,9 +55,7 @@ export default function Footerguru({ activeTab }: Props) {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  // ✅ GLOW ANIMATION (LEBIH SOLID)
   const glowAnim = useRef(new Animated.Value(0.9)).current;
-  
 
   useEffect(() => {
     Animated.loop(
@@ -73,9 +73,6 @@ export default function Footerguru({ activeTab }: Props) {
       ])
     ).start();
   }, []);
-  const formbuatkelas = () =>  {
-    navigation.navigate('formbuatkelas' as never);
-  };
 
   const glowStyle = {
     shadowColor: COLORS.primary,
@@ -99,9 +96,8 @@ export default function Footerguru({ activeTab }: Props) {
         <Path d={getPath()} fill={COLORS.background} />
       </Svg>
 
-      {/* Tab Items */}
+      {/* Tab Buttons */}
       <View style={styles.tabContainer}>
-        {/* HOME */}
         <TouchableOpacity
           style={styles.tabLeft}
           onPress={() => navigation.navigate("Guru")}
@@ -131,7 +127,6 @@ export default function Footerguru({ activeTab }: Props) {
 
         <View style={styles.centerSpacer} />
 
-        {/* PROFILE */}
         <TouchableOpacity
           style={styles.tabRight}
           onPress={() => navigation.navigate("Profileguru")}
@@ -158,12 +153,9 @@ export default function Footerguru({ activeTab }: Props) {
             Profil
           </Text>
         </TouchableOpacity>
-
-            
-
       </View>
 
-      {/* ✅ FLOAT BUTTON + STRONG GLOW */}
+      {/* Floating Button */}
       <Animated.View style={[styles.fabButton, glowStyle]}>
         <TouchableOpacity
           onPress={() => navigation.navigate("formbuatkelas")}
@@ -204,7 +196,7 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
     height: TAB_BAR_HEIGHT,
-    paddingTop: 5,
+    paddingTop: 10, // dinaikkan sedikit supaya seimbang
     justifyContent: "space-between",
     zIndex: 2,
   },
@@ -234,8 +226,9 @@ const styles = StyleSheet.create({
   },
 
   fabButton: {
+    marginTop: 10,
     position: "absolute",
-    top: -CURVE_DEPTH + 10,
+    top: -CURVE_DEPTH + 15,
     left: width / 2 - CENTER_BUTTON_SIZE / 2,
     width: CENTER_BUTTON_SIZE,
     height: CENTER_BUTTON_SIZE,
@@ -244,11 +237,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 3,
-
-    // ✅ Nambah efek solid di tengah
     borderWidth: 1,
     borderColor: "#3246ff",
-
     ...Platform.select({
       android: {
         elevation: 10,
