@@ -12,14 +12,15 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
-import AsyncStorage from '@react-native-async-storage/async-storage';   // ⭐ DITAMBAH TANPA MENGUBAH YANG LAIN
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ChevronRight } from 'lucide-react-native';
 
 const { width, height } = Dimensions.get('window');
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 
 export default function Onboarding({ navigation }: Props) {
-  // ⭐ DITAMBAH — CEK LOGIN TANPA MENGUBAH KODE YANG LAIN
+ 
   useEffect(() => {
     const checkLogin = async () => {
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
@@ -101,7 +102,6 @@ export default function Onboarding({ navigation }: Props) {
       ).start();
     });
 
-    // loop gambar
     Animated.loop(
       Animated.sequence([
         Animated.timing(imageAnim, {
@@ -235,7 +235,7 @@ export default function Onboarding({ navigation }: Props) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
-          <Text style={styles.arrow}>→</Text>
+          <ChevronRight size="40" style={styles.arrow}/>
         </TouchableOpacity>
       </View>
     </View>
@@ -343,9 +343,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   arrow: {
-    fontSize: 30,
+    
     color: 'white',
     textAlign: 'center',
-    marginTop: -10,
+    marginTop: -5,
+    
+  
   },
 });

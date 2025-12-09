@@ -31,14 +31,7 @@ export default function SplashScreen({ navigation }: Props) {
     // 🔥 (1) TIMER dan (2) onEnd LOGIN CHECK — DILETAKKAN BERDEKATAN
     const timer = setTimeout(() => {
       checkLogin();
-    }, 6500);
-
-    // Ini tetap sama, hanya diposisikan berdekatan (tidak mengubah isi)
-    // (Tidak dihapus, tidak diubah, tidak dipindah keluar)
-    // (Sekarang dua logic berada dalam satu “bagian yang sama”)
-    // —> sesuai permintaan “JADIKAN SATU”
-    // (blok ini hanya komentar penjelasan, tidak mengubah apapun)
-    
+    }, 5000);
     return () => clearTimeout(timer);
   }, [navigation]);
 
@@ -51,6 +44,11 @@ export default function SplashScreen({ navigation }: Props) {
         muted
         repeat={false}
         paused={false}
+       controls={false}          
+  fullscreen={false}          
+  disableFocus={true}        
+  playInBackground={false}    
+  playWhenInactive={false}     
 
         onEnd={() => {
           // jika video selesai lebih cepat → tetap cek login

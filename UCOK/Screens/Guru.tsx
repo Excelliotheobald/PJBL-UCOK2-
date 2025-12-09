@@ -4,35 +4,85 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  StatusBar,
   Image,
   TouchableOpacity,
   SafeAreaView,
+  
 } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import Footerguru from '../Components/Footerguru';
 import { Dimensions } from 'react-native';
-import { icons, Users, BookOpen } from 'lucide-react-native';
+import { EllipsisVertical, Users, BookOpen,Settings } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 const { width } = Dimensions.get('window');
 const HEADER_HEIGHT = 230;
 
-export default function Guru() {
+export default function Guru({ navigation }: any) {
+  const [nama, setNama] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false); // ⬅️ dropdown
+
+  useEffect(() => {
+    const ambilNama = async () => {
+      const savedName = await AsyncStorage.getItem('namaUser');
+      if (savedName) {
+        setNama(savedName);
+      }
+    };
+
+    ambilNama();
+  }, []);
+
+  const formbuatkelas = () => {
+    navigation.navigate('formbuatkelas' as never);
+  };
+
+  const handleLogout = async () => {
+   await AsyncStorage.clear();
+
+    navigation.replace('ChooseRole' as never);
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#EEEEF3' , }} >
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#EEEEF3' }}>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingBottom: 100 }} // ruang agar konten tidak ketutup footer
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
+
         <View style={{ flex: 1, backgroundColor: '#EEEEF3' }}>
+
+          {/* 🔵 DROPDOWN / MENU */}
+          {showDropdown && (
+            <TouchableOpacity
+              style={styles.overlay}
+              onPress={() => setShowDropdown(false)}
+              activeOpacity={1}
+            >
+              <View style={styles.dropdown}>
+                <TouchableOpacity
+                  style={styles.dropdownItem}
+                  onPress={handleLogout}
+                >
+                  <Text style={styles.dropdownText}>Logout</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          )}
+
           {/* 🔵 HEADER BARU */}
+          <TouchableOpacity
+            onPress={() => setShowDropdown(!showDropdown)}
+            style={styles.ellips}
+          >
+            <Settings color="#fff" />
+          </TouchableOpacity>
+
           <View style={styles.headerWrapper}>
-            {/* Lingkaran 1 */}
             <View style={styles.curve1} />
-            {/* Lingkaran 2 */}
             <View style={styles.curve} />
 
-            {/* Latar belakang utama */}
             <Svg height={HEADER_HEIGHT} width={width}>
               <Rect
                 x="0"
@@ -43,7 +93,6 @@ export default function Guru() {
               />
             </Svg>
 
-            {/* Profil + teks */}
             <View style={styles.profileContainer}>
               <Image
                 source={{
@@ -53,8 +102,8 @@ export default function Guru() {
               />
 
               <View style={styles.textContainer}>
-                <Text style={styles.welcomeText}>Halo, Pak Khoirul S 👋</Text>
-                <Text style={styles.subWelcomeText}>Selamat datang!</Text>
+                <Text style={styles.welcomeText}>{nama}</Text>
+                <Text style={styles.subWelcomeText}>Ayo Buat Soal !</Text>
               </View>
             </View>
           </View>
@@ -77,7 +126,7 @@ export default function Guru() {
             </View>
           </View>
 
-          {/* box buat soal */}
+          {/* 🔵 BOX BUAT SOAL */}
           <View style={styles.boxbuatsoal}>
             <View style={styles.icon}>
               <Users size={32} color="#1D1A9B" strokeWidth={2.5} />
@@ -89,98 +138,101 @@ export default function Guru() {
               Buat kelas pertama untuk memulai ujian dan membuat soal.
             </Text>
 
-            <TouchableOpacity style={styles.createBtn}>
+            <TouchableOpacity
+              style={styles.createBtn}
+              testID="formbuatkelas"
+              onPress={formbuatkelas}
+            >
               <Text style={styles.createBtnText}>+ Buat Kelas</Text>
             </TouchableOpacity>
           </View>
 
           <Text style={styles.anjay}>Langkah Memulai ❗</Text>
 
-                <View style={styles.wrapper1}>
+          <View style={styles.wrapper1}>
 
-  {/* STEP 1 */}
-  <View style={styles.card}>
-    <View style={styles.circle}>
-      <Text style={styles.circleText}>1</Text>
-    </View>
-    <View style={styles.textBox}>
-      <Text style={styles.title}>Buat Kelas</Text>
-      <Text style={styles.desc}>
-        Buat kelas baru dengan mengisi nama mata pelajaran, tingkat
-        kelas, dan informasi lainnya.
-      </Text>
+            {/* STEP 1 */}
+            <View style={styles.card}>
+              <View style={styles.circle}>
+                <Text style={styles.circleText}>1</Text>
+              </View>
+              <View style={styles.textBox}>
+                <Text style={styles.title}>Buat Kelas</Text>
+                <Text style={styles.desc}>
+                  Buat kelas baru dengan mengisi nama mata pelajaran, tingkat
+                  kelas, dan informasi lainnya.
+                </Text>
 
-      <TouchableOpacity>
-        <Text style={styles.link}>Buat Kelas →</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
+                <TouchableOpacity onPress={formbuatkelas}>
+                  <Text style={styles.link}>Buat Kelas →</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
 
-  {/* STEP 2 */}
-  <View style={[styles.card, styles.activeCard]}>
-    <View style={styles.circle}>
-      <Text style={styles.circleText}>2</Text>
-    </View>
-    <View style={styles.textBox}>
-      <Text style={styles.title}>Tambah Siswa</Text>
-      <Text style={styles.desc}>
-        Tambahkan siswa ke kelas dengan mengundang mereka atau input
-        manual data siswa.
-      </Text>
-    </View>
-  </View>
+            {/* STEP 2 */}
+            <View style={[styles.card, styles.activeCard]}>
+              <View style={styles.circle}>
+                <Text style={styles.circleText}>2</Text>
+              </View>
+              <View style={styles.textBox}>
+                <Text style={styles.title}>Tambah Siswa</Text>
+                <Text style={styles.desc}>
+                  Tambahkan siswa ke kelas dengan mengundang mereka atau input
+                  manual data siswa.
+                </Text>
+              </View>
+            </View>
 
-  {/* STEP 3 */}
-  <View style={styles.card}>
-    <View style={styles.circle}>
-      <Text style={styles.circleText}>3</Text>
-    </View>
-    <View style={styles.textBox}>
-      <Text style={styles.title}>Buat Soal Ujian</Text>
-      <Text style={styles.desc}>
-        Buat soal ujian pilihan ganda pada kelas.
-      </Text>
-    </View>
-  </View>
+            {/* STEP 3 */}
+            <View style={styles.card}>
+              <View style={styles.circle}>
+                <Text style={styles.circleText}>3</Text>
+              </View>
+              <View style={styles.textBox}>
+                <Text style={styles.title}>Buat Soal Ujian</Text>
+                <Text style={styles.desc}>
+                  Buat soal ujian pilihan ganda pada kelas.
+                </Text>
+              </View>
+            </View>
 
-  {/* STEP 4 */}
-  <View style={styles.card}>
-    <View style={styles.circle}>
-      <Text style={styles.circleText}>4</Text>
-    </View>
-    <View style={styles.textBox}>
-      <Text style={styles.title}>Jadwalkan Ujian</Text>
-      <Text style={styles.desc}>
-        Atur jadwal dan durasi ujian, lalu publikasikan untuk siswa.
-      </Text>
-    </View>
-  </View>
+            {/* STEP 4 */}
+            <View style={styles.card}>
+              <View style={styles.circle}>
+                <Text style={styles.circleText}>4</Text>
+              </View>
+              <View style={styles.textBox}>
+                <Text style={styles.title}>Jadwalkan Ujian</Text>
+                <Text style={styles.desc}>
+                  Atur jadwal dan durasi ujian, lalu publikasikan untuk siswa.
+                </Text>
+              </View>
+            </View>
 
-  {/* TIPS BOX */}
-  <View style={styles.tipsBox}>
-    <Text style={styles.tipsTitle}>Tips Membuat Ujian yang Baik 💡</Text>
+            {/* TIPS */}
+            <View style={styles.tipsBox}>
+              <Text style={styles.tipsTitle}>Tips Membuat Ujian yang Baik 💡</Text>
 
-    <Text style={styles.tipsItem}>• Buat soal dengan tingkat kesulitan bervariasi</Text>
-    <Text style={styles.tipsItem}>• Pastikan instruksi soal jelas dan mudah dipahami</Text>
-    <Text style={styles.tipsItem}>• Atur waktu ujian sesuai jumlah dan kesulitan soal</Text>
-    <Text style={styles.tipsItem}>• Cek kembali kunci jawaban sebelum publikasi</Text>
-  </View>
+              <Text style={styles.tipsItem}>• Buat soal dengan tingkat kesulitan bervariasi</Text>
+              <Text style={styles.tipsItem}>• Pastikan instruksi soal jelas dan mudah dipahami</Text>
+              <Text style={styles.tipsItem}>• Atur waktu ujian sesuai jumlah dan kesulitan soal</Text>
+              <Text style={styles.tipsItem}>• Cek kembali kunci jawaban sebelum publikasi</Text>
+            </View>
 
-  {/* BUTUH BANTUAN */}
-  <View style={styles.helpBox}>
-    <BookOpen size={42} color="#2A34D9" />
-    <Text style={styles.helpTitle}>Butuh Bantuan?</Text>
-    <Text style={styles.helpDesc}>
-      Baca panduan lengkap cara menggunakan aplikasi
-    </Text>
+            {/* HELP */}
+            <View style={styles.helpBox}>
+              <BookOpen size={42} color="#2A34D9" />
+              <Text style={styles.helpTitle}>Butuh Bantuan?</Text>
+              <Text style={styles.helpDesc}>
+                Baca panduan lengkap cara menggunakan aplikasi
+              </Text>
 
-    <TouchableOpacity>
-      <Text style={styles.link}>Baca Panduan →</Text>
-    </TouchableOpacity>
-  </View>
+              <TouchableOpacity>
+                <Text style={styles.link}>Baca Panduan →</Text>
+              </TouchableOpacity>
+            </View>
 
-</View>
-
+          </View>
 
         </View>
       </ScrollView>
@@ -199,6 +251,51 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 35,
     overflow: 'hidden',
   },
+
+
+overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 999,
+  },
+
+  dropdown: {
+    position: 'absolute',
+    top: 110,
+    right: 20,
+    backgroundColor: '#fff',
+    paddingVertical: 5,
+    width: 100,
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+
+  dropdownItem: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginLeft: 15,
+  },
+
+  dropdownText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'red',
+    
+  },
+
+  ellips: {
+    position: 'absolute',
+    top: 80, 
+    right: 20,
+    zIndex: 10,
+  },
+    
 
    wrapper1: {
     padding: 16,
@@ -321,7 +418,7 @@ const styles = StyleSheet.create({
   },
 
   createBtn: {
-    backgroundColor: '#1D1A9B',
+    backgroundColor: '#2A34D9',
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 10,
@@ -400,15 +497,15 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 70,
-    marginLeft: 20,
+    marginTop: 90,
+    marginLeft: 30,
     zIndex: 5,
     position: 'absolute',
   },
 
   profileImage: {
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     backgroundColor: '#ccc',
     borderWidth: 3,
@@ -416,18 +513,19 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
-    marginLeft: 12,
+    marginLeft: 25,
   },
 
   welcomeText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '700',
+    
   },
 
   subWelcomeText: {
     color: '#D5D9FF',
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 2,
     fontWeight: '500',
   },

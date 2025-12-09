@@ -14,6 +14,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
 const { width, height } = Dimensions.get('window');
 
 export default function ChooseRole() {
@@ -227,6 +229,8 @@ function RegisterView({ onClose, onSwitch, role, navigation }: any) {
 
   const handleRegister = async () => {
     try {
+      await AsyncStorage.setItem('namaUser', nama);
+
       const response = await fetch('http://10.0.2.2:5000/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -300,7 +304,7 @@ function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
       const response = await fetch('http://10.0.2.2:5000/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, }),
       });
 
       const data = await response.json();
@@ -309,6 +313,10 @@ function LoginView({ onClose, onSwitch, onForgot, navigation }: any) {
         Alert.alert('Gagal', data.message || 'Login gagal.');
         return;
       }
+
+      await AsyncStorage.setItem('namaUser', data.user.nama);
+await AsyncStorage.setItem('roleUser', data.user.role);
+
 
       Alert.alert('Berhasil', 'Login sukses!');
 
